@@ -23,25 +23,20 @@ public class Scenario2 {
 		Response resp = specs.get("/v1/bpi/currentprice.json");
 		String response = resp.asString();
 		System.out.println(response);
-
-		//String USD = JsonPath.read(response, "$.bpi.USD");
-		//System.out.println(USD);
 		ReadContext ctx = JsonPath.parse(response);
 		Map<String, Object> bpi = ctx.read("$.bpi");
-		String gbpDescription=ctx.read("$.bpi.GBP.description");
+		String gbpDescription = ctx.read("$.bpi.GBP.description");
 		System.out.println(gbpDescription);
 		SoftAssert softAssert = new SoftAssert();
 		softAssert.assertEquals(bpi.size(), 3);
-		softAssert.assertEquals(gbpDescription,"British Pound Sterling");
-		ArrayList<String> expected = new ArrayList<String>(Arrays.asList("USD","GBP","EUR"));
-		int i=0;
-		for(Map.Entry<String, Object> b: bpi.entrySet()) {
+		softAssert.assertEquals(gbpDescription, "British Pound Sterling");
+		ArrayList<String> expected = new ArrayList<String>(Arrays.asList("USD", "GBP", "EUR"));
+		int i = 0;
+		for (Map.Entry<String, Object> b : bpi.entrySet()) {
 			System.out.println(b.getKey());
 			softAssert.assertEquals(b.getKey(), expected.get(i++));
 		}
 		softAssert.assertAll();
-		
-
 	}
 
 }
